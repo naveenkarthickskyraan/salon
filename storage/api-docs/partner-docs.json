@@ -1,0 +1,1311 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Salon Partner API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/partner/register": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Partner sign up (0 = email, 1 = google, 2 = apple)",
+                "operationId": "partnerRegister",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "register_type"
+                                ],
+                                "properties": {
+                                    "register_type": {
+                                        "description": "0 = email, 1 = google, 2 = apple",
+                                        "type": "integer",
+                                        "example": 0,
+                                        "enum": [
+                                            0,
+                                            1,
+                                            2
+                                        ]
+                                    },
+                                    "email": {
+                                        "description": "Only for type 0",
+                                        "type": "string",
+                                        "example": "owner@salon.com"
+                                    },
+                                    "password": {
+                                        "description": "Only for type 0",
+                                        "type": "string",
+                                        "example": "Salon@1234"
+                                    },
+                                    "social_id": {
+                                        "description": "Type 1: Google ID, type 2: Apple ID",
+                                        "type": "string"
+                                    },
+                                    "token": {
+                                        "description": "Type 1: Google access_token, type 2: Apple identity_token",
+                                        "type": "string"
+                                    },
+                                    "device_id": {
+                                        "type": "string"
+                                    },
+                                    "device_token": {
+                                        "type": "string"
+                                    },
+                                    "device_type": {
+                                        "type": "string",
+                                        "example": "android"
+                                    },
+                                    "app_version": {
+                                        "type": "string",
+                                        "example": "1.0.0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email: code sent. Google/Apple: returns token"
+                    },
+                    "401": {
+                        "description": "Invalid social token / ID mismatch"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/partner/verify-otp": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Verify sign up code",
+                "operationId": "partnerVerifyOtp",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "owner@salon.com"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Verified, returns token"
+                    },
+                    "422": {
+                        "description": "Invalid or expired code"
+                    }
+                }
+            }
+        },
+        "/api/partner/resend-otp": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Resend verification code",
+                "operationId": "partnerResendOtp",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "owner@salon.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Code sent"
+                    }
+                }
+            }
+        },
+        "/api/partner/login": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Login (0 = email, 1 = google, 2 = apple)",
+                "operationId": "partnerLogin",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "login_type"
+                                ],
+                                "properties": {
+                                    "login_type": {
+                                        "description": "0 = email, 1 = google, 2 = apple",
+                                        "type": "integer",
+                                        "example": 0,
+                                        "enum": [
+                                            0,
+                                            1,
+                                            2
+                                        ]
+                                    },
+                                    "email": {
+                                        "description": "Only for type 0",
+                                        "type": "string",
+                                        "example": "owner@salon.com"
+                                    },
+                                    "password": {
+                                        "description": "Only for type 0",
+                                        "type": "string",
+                                        "example": "Salon@1234"
+                                    },
+                                    "social_id": {
+                                        "description": "Type 1: Google ID, type 2: Apple ID",
+                                        "type": "string"
+                                    },
+                                    "token": {
+                                        "description": "Type 1: Google access_token, type 2: Apple identity_token",
+                                        "type": "string"
+                                    },
+                                    "device_id": {
+                                        "type": "string"
+                                    },
+                                    "device_token": {
+                                        "type": "string"
+                                    },
+                                    "device_type": {
+                                        "type": "string",
+                                        "example": "android"
+                                    },
+                                    "app_version": {
+                                        "type": "string",
+                                        "example": "1.0.0"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns token"
+                    },
+                    "401": {
+                        "description": "Invalid credentials / token / ID mismatch"
+                    },
+                    "403": {
+                        "description": "Email not verified"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/partner/forgot-password": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Send reset code to email",
+                "operationId": "partnerForgotPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "owner@salon.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Code sent"
+                    }
+                }
+            }
+        },
+        "/api/partner/forgot-password/verify": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Verify reset code",
+                "operationId": "partnerForgotVerify",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "owner@salon.com"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns reset_token"
+                    },
+                    "422": {
+                        "description": "Invalid or expired code"
+                    }
+                }
+            }
+        },
+        "/api/partner/reset-password": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Set new password",
+                "operationId": "partnerResetPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "reset_token",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "owner@salon.com"
+                                    },
+                                    "reset_token": {
+                                        "description": "Returned by forgot-password/verify",
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "Salon@1234"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "Salon@1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password changed"
+                    },
+                    "422": {
+                        "description": "Invalid token or validation error"
+                    }
+                }
+            }
+        },
+        "/api/partner/logout": {
+            "post": {
+                "tags": [
+                    "Partner Auth"
+                ],
+                "summary": "Logout",
+                "operationId": "partnerLogout",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "device_id": {
+                                        "description": "Optional. Clears the push token if it matches this device",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged out"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salons/{salon}/categories": {
+            "get": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Categories tab (with service count)",
+                "operationId": "partnerCategoryList",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "with_services",
+                        "in": "query",
+                        "description": "1 = include the services of each category",
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categories"
+                    },
+                    "404": {
+                        "description": "Salon not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salons/{salon}/categories/{category}": {
+            "delete": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Delete category and ALL its services",
+                "operationId": "partnerCategoryDelete",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "409": {
+                        "description": "A service has upcoming bookings"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salon/send-otp": {
+            "post": {
+                "tags": [
+                    "Partner Salon Setup"
+                ],
+                "summary": "Send OTP to salon email or mobile number",
+                "operationId": "partnerSalonSendOtp",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "identifier"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "mobile",
+                                        "enum": [
+                                            "email",
+                                            "mobile"
+                                        ]
+                                    },
+                                    "identifier": {
+                                        "type": "string",
+                                        "example": "9876543211"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP sent"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "429": {
+                        "description": "Please wait before requesting another OTP"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salon/verify-otp": {
+            "post": {
+                "tags": [
+                    "Partner Salon Setup"
+                ],
+                "summary": "Verify OTP for salon email or mobile number",
+                "operationId": "partnerSalonVerifyOtp",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "type",
+                                    "identifier",
+                                    "otp"
+                                ],
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "example": "mobile",
+                                        "enum": [
+                                            "email",
+                                            "mobile"
+                                        ]
+                                    },
+                                    "identifier": {
+                                        "type": "string",
+                                        "example": "9876543211"
+                                    },
+                                    "otp": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verified"
+                    },
+                    "422": {
+                        "description": "Invalid or expired OTP"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salon-setup": {
+            "post": {
+                "tags": [
+                    "Partner Salon Setup"
+                ],
+                "summary": "Create salon (setup steps 1 to 3)",
+                "description": "Saves basic details, working hours and location in one transaction. Email and mobile OTPs are verified before saving. One salon per partner.",
+                "operationId": "partnerSalonSetup",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "business_name",
+                                    "business_cover_images[]",
+                                    "business_type",
+                                    "email",
+                                    "email_otp",
+                                    "owner_name",
+                                    "mobile_number",
+                                    "mobile_otp",
+                                    "working_hours",
+                                    "pincode",
+                                    "country",
+                                    "state",
+                                    "city",
+                                    "locality",
+                                    "address_line",
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "properties": {
+                                    "business_name": {
+                                        "type": "string",
+                                        "example": "Madona Beauty Salon"
+                                    },
+                                    "business_cover_images[]": {
+                                        "description": "1 to 12 images (jpg, jpeg, png, webp, max 5 MB each). Swagger sends one file reliably; use Postman for several.",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    },
+                                    "business_type": {
+                                        "type": "string",
+                                        "example": "unisex",
+                                        "enum": [
+                                            "unisex",
+                                            "men",
+                                            "women"
+                                        ]
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "madona@gmail.com"
+                                    },
+                                    "email_otp": {
+                                        "type": "string",
+                                        "example": "1403"
+                                    },
+                                    "owner_name": {
+                                        "type": "string",
+                                        "example": "Madonna"
+                                    },
+                                    "mobile_number": {
+                                        "type": "string",
+                                        "example": "9876543211"
+                                    },
+                                    "mobile_otp": {
+                                        "type": "string",
+                                        "example": "1234"
+                                    },
+                                    "alternative_number": {
+                                        "type": "string",
+                                        "example": "9876543212",
+                                        "nullable": true
+                                    },
+                                    "alternative_number_otp": {
+                                        "type": "string",
+                                        "example": "5678",
+                                        "nullable": true
+                                    },
+                                    "working_hours": {
+                                        "description": "Swagger: paste as one JSON string with exactly 7 days (time format H:i, 24-hour). The real app sends working_hours[0][day], working_hours[0][is_open], etc.",
+                                        "type": "string",
+                                        "example": "[{\"day\":\"monday\",\"is_open\":1,\"opening_time\":\"09:00\",\"closing_time\":\"22:00\"},{\"day\":\"tuesday\",\"is_open\":1,\"opening_time\":\"09:00\",\"closing_time\":\"22:00\"},{\"day\":\"wednesday\",\"is_open\":1,\"opening_time\":\"09:00\",\"closing_time\":\"22:00\"},{\"day\":\"thursday\",\"is_open\":1,\"opening_time\":\"09:00\",\"closing_time\":\"22:00\"},{\"day\":\"friday\",\"is_open\":1,\"opening_time\":\"09:00\",\"closing_time\":\"22:00\"},{\"day\":\"saturday\",\"is_open\":0},{\"day\":\"sunday\",\"is_open\":0}]"
+                                    },
+                                    "pincode": {
+                                        "type": "string",
+                                        "example": "642103"
+                                    },
+                                    "country": {
+                                        "type": "string",
+                                        "example": "India"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "example": "Tamil Nadu"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "Coimbatore"
+                                    },
+                                    "locality": {
+                                        "type": "string",
+                                        "example": "Ghandhipuram"
+                                    },
+                                    "address_line": {
+                                        "type": "string",
+                                        "example": "1/115, 2nd Street, Sangaman Street"
+                                    },
+                                    "landmark": {
+                                        "type": "string",
+                                        "example": "Tidel Park Opposite",
+                                        "nullable": true
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "double",
+                                        "example": 11.0168445
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "double",
+                                        "example": 76.9558321
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Salon created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Salon created successfully."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "409": {
+                        "description": "Salon already exists for this partner",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Salon already created for this partner."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation or OTP verification failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salons/{salon}/service-options": {
+            "get": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Dropdown data. Service names already added to this salon are left out (add \"Others\" in the app)",
+                "operationId": "partnerServiceOptions",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "query",
+                        "description": "Edit screen: keep this service's own name in the list",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Options"
+                    },
+                    "404": {
+                        "description": "Salon not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salons/{salon}/services": {
+            "get": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Services tab (search, category chip, status filter)",
+                "operationId": "partnerServiceList",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "Salon category id (from the categories API)",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "all",
+                                "active",
+                                "hidden"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated services"
+                    },
+                    "404": {
+                        "description": "Salon not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Create service (category is created automatically)",
+                "operationId": "partnerServiceCreate",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "category_id": {
+                                        "description": "Master category id (categories list)",
+                                        "type": "integer"
+                                    },
+                                    "salon_category_id": {
+                                        "description": "One of this salon's own categories (my_categories list)",
+                                        "type": "integer"
+                                    },
+                                    "other_category_name": {
+                                        "description": "Only when category is \"Others\"",
+                                        "type": "string"
+                                    },
+                                    "service_name_id": {
+                                        "description": "Service name id. Leave empty when \"Others\"",
+                                        "type": "integer"
+                                    },
+                                    "other_service_name": {
+                                        "description": "Only when service is \"Others\"",
+                                        "type": "string"
+                                    },
+                                    "duration_minutes": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "for_whom": {
+                                        "type": "string",
+                                        "enum": [
+                                            "men",
+                                            "women",
+                                            "kids",
+                                            "everyone"
+                                        ]
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 299
+                                    },
+                                    "cover_image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "422": {
+                        "description": "Validation error / duplicate"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salons/{salon}/services/{service}": {
+            "get": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Service details",
+                "operationId": "partnerServiceShow",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Service"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Edit service (send only the fields that changed)",
+                "operationId": "partnerServiceUpdate",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "category_id": {
+                                        "type": "integer"
+                                    },
+                                    "salon_category_id": {
+                                        "type": "integer"
+                                    },
+                                    "other_category_name": {
+                                        "type": "string"
+                                    },
+                                    "service_name_id": {
+                                        "type": "integer"
+                                    },
+                                    "other_service_name": {
+                                        "type": "string"
+                                    },
+                                    "duration_minutes": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "for_whom": {
+                                        "type": "string",
+                                        "enum": [
+                                            "men",
+                                            "women",
+                                            "kids",
+                                            "everyone"
+                                        ]
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 299
+                                    },
+                                    "cover_image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Changes saved"
+                    },
+                    "422": {
+                        "description": "Validation error / duplicate"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Delete service permanently",
+                "operationId": "partnerServiceDelete",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "409": {
+                        "description": "Has upcoming bookings"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salons/{salon}/services/{service}/visibility": {
+            "patch": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Hide / unhide a service",
+                "operationId": "partnerServiceVisibility",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "is_active"
+                                ],
+                                "properties": {
+                                    "is_active": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/partner/salons/{salon}/services/{service}/move": {
+            "post": {
+                "tags": [
+                    "Partner Services"
+                ],
+                "summary": "Move service to another category of the same salon",
+                "operationId": "partnerServiceMove",
+                "parameters": [
+                    {
+                        "name": "salon",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category_id"
+                                ],
+                                "properties": {
+                                    "category_id": {
+                                        "description": "Salon category id (from the categories API)",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Moved"
+                    },
+                    "422": {
+                        "description": "Same category / duplicate"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "description": "Paste only the Sanctum token",
+                "bearerFormat": "Sanctum",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Partner Auth",
+            "description": "Partner Auth"
+        },
+        {
+            "name": "Partner Services",
+            "description": "Partner Services"
+        },
+        {
+            "name": "Partner Salon Setup",
+            "description": "Partner Salon Setup"
+        }
+    ]
+}

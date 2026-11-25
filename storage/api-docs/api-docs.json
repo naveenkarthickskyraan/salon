@@ -1,0 +1,48 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Salon API",
+        "description": "Salon management API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/swagger-test": {
+            "get": {
+                "tags": [
+                    "Swagger Test"
+                ],
+                "summary": "Test Swagger API",
+                "description": "Check whether Swagger documentation is working",
+                "operationId": "swaggerTest",
+                "responses": {
+                    "200": {
+                        "description": "Swagger is working successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Swagger is working successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Swagger Test",
+            "description": "Swagger Test"
+        }
+    ]
+}
